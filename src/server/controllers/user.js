@@ -35,7 +35,7 @@ const login = async (req, res) => {
   }
 
   const token = jwt.sign({ username }, jwtSecret);
-  res.json({ data: token, name: username });
+  res.json({ token: token, username: username });
 };
 
 module.exports = {

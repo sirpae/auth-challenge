@@ -25,7 +25,7 @@ function App() {
   };
 
   const handleLogin = async ({ username, password }) => {
-    await fetch(`${apiUrl}/user/login`, {
+    const res = await fetch(`${apiUrl}/user/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -33,23 +33,24 @@ function App() {
       body: JSON.stringify({ username, password })
     });
 
-    const data = await res.json();
-    localStorage.setItem('token', data.token); //
+    const data = await res.json()
+    localStorage.setItem('username', data.username)
+    localStorage.setItem('token', data.token); 
   };
   
   const handleCreateMovie = async ({ title, description, runtimeMins }) => {
-    const user = localStorage.getItem('user') // 
-    console.log(user) // 
+    const token = localStorage.getItem('token');
     await fetch(`${apiUrl}/movie`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${data}`
+        'Authorization': token
       },
       body: JSON.stringify({ title, description, runtimeMins })
     });
-    const data = await res.json();
-    setMovies([...movies, data]);
+    fetch(`${apiUrl}/movie`)
+    .then(res => res.json())
+    .then(res => setMovies(res.data));
   };
 
 
